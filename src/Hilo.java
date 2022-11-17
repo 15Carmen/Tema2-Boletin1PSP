@@ -1,28 +1,32 @@
-public class Hilo extends Thread{
-    private String nombre;
+import java.io.File;
 
-    public Hilo(String nombre) {
-        super();
-        this.nombre = nombre;
-    }
+public class Hilo extends Thread {
 
-    public static void crearHilos(){
-        for (int i = 0; i < 5; i++) {
-            Hilo nuevoHilo = new Hilo("hilo"+i);
-            System.out.println(nuevoHilo.getName());
+    public void crearHilos() {
+        while (true) {
+
+            String nombre = Thread.currentThread().getName();
+            System.out.println("Soy el bucle " + nombre + " y estoy trabajando");
+
+            try {
+                Thread.sleep((long) (Math.random() * 10000));
+            } catch (InterruptedException e) {
+                System.out.println("El hilo " + nombre + " ha sido interrumpido.");
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void run(){
+    public void run() {
         this.crearHilos();
-        while (true){
-            System.out.println("Soy el bucle "+ this.getName() +" y estoy trabajando");
-        }
-
     }
 
     public static void main(String[] args) {
-        Hilo.crearHilos();
+        for (int i = 1; i <= 5; i++) {
+            Hilo hilo = new Hilo();
+            hilo.setName("Hilo " + i);
+            hilo.start();
+        }
     }
 }
